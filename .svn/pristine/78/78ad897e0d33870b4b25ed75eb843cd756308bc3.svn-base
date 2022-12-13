@@ -1,0 +1,1 @@
+* * * * * echo "Hello from Container $(date)" >> /var/log/cron.log 2>&1

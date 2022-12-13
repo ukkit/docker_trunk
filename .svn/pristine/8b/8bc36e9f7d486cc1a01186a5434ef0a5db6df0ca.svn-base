@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+class populateJenkinsCreds extends Command
+{
+
+    // this is one-time executing script to populate jenkins user and token to jenkins_credentials table
+    // step 1: read all instances having jenkins url
+    // step 2: extract ip address/server name from those urls
+    // step 3: add the server/ip, user & token (encrypted) to credentials table
+    // step 4: then populate jenkins_credentials_id in instance_details table
+
+    protected $signature = 'command:popJenCreds';
+
+    protected $description = 'Command description';
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function handle()
+    {
+        $scriptID = 'eNPwHEeS4SZLpnihr4t0yx3qcbhzD4u3i27fk5W8DgPDTdnpxJhNG9yiBVFzKL8O'; //NOT TO BE CHANGED
+        $scriptName = 'popJenCreds'; //NOT TO BE CHANGED
+
+        $unique_arr = array();
+
+        if (!one_time_execution($scriptID)) {
+            $all_instances = DB::table('instance_details')->whereNotNull('jenkins_url')->whereNull('deleted_at')->get();
+            // echo (count($all_instances) . "\n");
+            foreach ($all_instances as $instances) {
+                $parse = parse_url($instances->jenkins_url);
+                $toadd = $parse['host'] . "|" . $instances->jenkins_token . "|" . strtolower($instances->jenkins_uname);
+                // echo $toadd;
+                if ($instances->jenkins_token !== null) {
+                    array_push($unique_arr, $toadd);
+                }
+            }
+            $unique_arr = array_unique($unique_arr);
+            print_r($unique_arr);
+            foreach ($unique_arr as $value) {
+                $expl = explode("|", $value);
+                $encrypted = \Crypt::encrypt($expl[1]);
+
+                DB::table('jenkins_credentials')->insert(['server_name_ip' => trim($expl[0]), 'jenkins_user' => trim($expl[2]), 'jenkins_token' => $encrypted, 'created_at' => now()]);
+                $insertedid = DB::getPdo()->lastInsertId();
+                echo $insertedid . " ID added \n";
+            }
+
+            $all_jencred = DB::table('jenkins_credentials')->select('id', 'server_name_ip', 'jenkins_token')->get();
+            echo " --->" . count($all_jencred) . "\n";
+            $arr = json_decode(json_encode($all_jencred), true);
+            echo " ===>" . count($arr) . "\n";
+
+            foreach ($all_instances as $inst) {
+                $par = parse_url($inst->jenkins_url);
+
+                foreach ($arr as $key => $value) {
+                    $unenc = \Crypt::decrypt($value['jenkins_token']);
+                    if (array_search($par['host'], $value)) {
+                        // echo "Found on ID " . $value['id'];
+                        if ($unenc == $inst->jenkins_token) {
+                            echo "+ Found on ID " . $value['id'] . "\n";
+                            DB::table('instance_details')->where('id', $inst->id)->update(['jenkins_credentials_id' => $value['id']]);
+                        }
+                    }
+                }
+            }
+
+            DB::table('one_time_executions')->insert(['script_id' => $scriptID, 'script_name' => $scriptName, 'executed' => 'Y', 'created_at' => Carbon::now()]);
+        } else {
+            echo "Script Already executed \n";
+        }
+    }
+}

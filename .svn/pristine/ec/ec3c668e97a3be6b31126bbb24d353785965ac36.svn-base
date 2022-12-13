@@ -1,0 +1,72 @@
+This is SPODASH upgraded to Laravel 6 from Laravel 5.8 via laravelshift
+
+# FIRST TIME:
+
+1. make copy of .env.sample file as .env
+
+2. update the following in the file:
+
+   - DB_HOST: hostname or the name of container if running via docker (typically db)
+   - DB_DATABASE=name of database
+   - DB_USERNAME=database user name
+   - DB_PASSWORD=database password (this will also be root password)
+
+3. If you want to change default port numbers, then open docker-composer.yml file and update 'ports' for db and nginx
+
+4. Bring up the docker via following command:
+
+   `docker-compose up -d --build`
+
+   > Take note of container names that comes as "Starting <CONTAINER_NAME> ... done"
+
+5. Make sure all docker images show status as 'UP' via 'docker ps' command
+
+   > If any error related to port number is shown, then make sure no other process is using the port numbers defined in docker-compose.yml file
+
+6. Login to mysql container:
+
+   `docker exec -it <DB_CONTAINER_NAME> /bin/bash`
+
+7. Once in bash, login to mysql using:
+
+   `mysql -uroot -p`
+
+   > Use the password you defined as DB_PASSWOED in .env file
+
+8. Once logged in,run following 2 commands, change <DB_USERNAME> & <DB_PASSWORD> as defined in .env file:
+
+   - `CREATE DATABASE <DB_DATABASE>`
+   - `CREATE USER '<DB_USERNAME>'@'%' IDENTIFIED BY '<DB_PASSWORD>';`
+   - `GRANT SELECT, INSERT, UPDATE, CREATE, DELETE, RELOAD, SHUTDOWN, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, CREATE TEMPORARY TABLES, LOCK TABLES, REPLICATION CLIENT, CREATE VIEW, EVENT, TRIGGER, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EXECUTE ON *.* TO '<DB_USERNAME>'@'%' ;`
+
+9. Once above are done, you can login to mysql using above user and password to confirm it's creation.
+
+10. Next step is to import dashboard database:
+
+    `docker exec -i <DB_CONTAINER_NAME> mysql -u<DB_USERNAME> -p<DB_PASSWORD> <DB_DATABASE> < db_import_file.sql`
+
+11. Last step is to login to app docker and run composer install:
+
+    `docker exec -it <APP_CONTAINER_NAME> /bin/bash`
+
+    `composer install`
+
+## TROUBLESHOOT:
+
+```
+Issue: ERROR 1396 (HY000): Operation CREATE USER failed for '<DB_USERNAME>'@'%'
+
+Resolution: DROP USER <DB_USERNAME>
+```
+
+```
+Issue: Unable to access storage or cache or vendor directories:
+
+Resolution:
+    sudo chmod -R 775 storage
+    sudo chmod -R 775 bootstrap/cache
+    sudo chmod -R 775 vendor
+    sudo chmod o+w ./storage/ -R
+    sudo chmod o+w ./bootstrap/cache/ -R
+    sudo chmod o+w ./vendor/ -R
+```
