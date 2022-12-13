@@ -24,6 +24,7 @@ class Intellicus_detail extends Model
         'server_details_id',
         'intellicus_versions_id',
         'database_details_id',
+        'users_id',
         'intellicus_port',
         'intellicus_login',
         'intellicus_pwd',
@@ -46,6 +47,7 @@ class Intellicus_detail extends Model
         'intellicus_name' => 'string',
         'server_details_id' => 'integer',
         'database_details_id' => 'integer',
+        'users_id' => 'integer',
         'intellicus_versions_id' => 'integer',
         'intellicus_port' => 'integer',
         'intellicus_login' => 'string',
@@ -132,7 +134,7 @@ class Intellicus_detail extends Model
     public function return_server_details($id, $return_what)
     {
         $value = DB::table('server_details')->where('id', $id)
-               ->get();
+            ->get();
 
         return $value->pluck($return_what);
         // return $value;
@@ -141,7 +143,7 @@ class Intellicus_detail extends Model
     public function return_intellicus_version_details($id, $return_what)
     {
         $value = DB::table('intellicus_versions')->where('id', $id)
-               ->get();
+            ->get();
 
         return $value->pluck($return_what);
         // return $value;

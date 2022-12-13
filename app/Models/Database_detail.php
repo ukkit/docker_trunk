@@ -25,6 +25,7 @@ class Database_detail extends Model
         'server_details_id',
         'database_types_id',
         'ambari_details_id',
+        'users_id',
         'db_sid',
         'db_user',
         'db_pass',
@@ -48,6 +49,7 @@ class Database_detail extends Model
         'server_details_id' => 'integer',
         'database_types_id' => 'integer',
         'ambari_details_id' => 'integer',
+        'users_id' => 'integer',
         'db_sid' => 'string',
         'db_user' => 'string',
         'db_pass' => 'string',
@@ -64,9 +66,7 @@ class Database_detail extends Model
      *
      * @var array
      */
-    public static $rules = [
-
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

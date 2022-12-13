@@ -22,6 +22,7 @@ class Pai_detail extends Model
     public $fillable = [
         'server_details_id',
         'ambari_details_id',
+        'users_id',
         'pai_type',
         'pai_user',
         'pai_pwd',
@@ -38,6 +39,7 @@ class Pai_detail extends Model
         'id' => 'integer',
         'server_details_id' => 'integer',
         'ambari_details_id' => 'integer',
+        'users_id' => 'integer',
         'pai_type' => 'string',
         'pai_user' => 'string',
         'pai_pwd' => 'string',
@@ -96,14 +98,14 @@ class Pai_detail extends Model
 
     public function setPaiPwdAttribute($value)
     {
-        if (! empty($value)) {
+        if (!empty($value)) {
             $this->attributes['pai_pwd'] = Crypt::encryptString($value);
         }
     }
 
     public function getPaiPwdAttribute($value)
     {
-        if (! empty($value)) {
+        if (!empty($value)) {
             try {
                 return Crypt::decryptString($value);
             } catch (DecryptException $e) {

@@ -23,6 +23,7 @@ class Server_detailRepository extends BaseRepository
         'os_types_id',
         'database_types_id',
         'server_uses_id',
+        'users_id',
         'server_name',
         'server_ip',
         'server_class',

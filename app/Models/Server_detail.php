@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Auth;
-use DB;
+// use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Eloquent as Model;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Server_detail extends Model
 {
-    use SoftDeletes,HasRoles;
+    use SoftDeletes, HasRoles;
     use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
     public $table = 'server_details';
@@ -30,6 +31,7 @@ class Server_detail extends Model
         'os_types_id',
         'database_types_id',
         'server_uses_id',
+        'users_id',
         'server_name',
         'server_ip',
         'server_class',
@@ -58,6 +60,7 @@ class Server_detail extends Model
         'os_types_id' => 'integer',
         'database_types_id' => 'integer',
         'server_uses_id' => 'integer',
+        'users_id' => 'integer',
         'server_name' => 'string',
         'server_ip' => 'string',
         'server_class' => 'string',
@@ -80,9 +83,7 @@ class Server_detail extends Model
      *
      * @var array
      */
-    public static $rules = [
-
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -176,9 +177,9 @@ class Server_detail extends Model
     public function return_server_details($id, $return_what)
     {
         $value = DB::table('database_details')->where('database_details.id', $id)
-                ->join('server_details', 'database_details.server_details_id', '=', 'server_details.id')
-                ->select('server_details.*')
-                ->get();
+            ->join('server_details', 'database_details.server_details_id', '=', 'server_details.id')
+            ->select('server_details.*')
+            ->get();
 
         return $value->pluck($return_what);
     }

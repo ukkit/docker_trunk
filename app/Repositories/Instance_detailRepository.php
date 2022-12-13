@@ -28,6 +28,7 @@ class Instance_detailRepository extends BaseRepository
         'pai_details_id',
         'ml_details_id',
         'jenkins_credentials_id',
+        'users_id',
         'pv_id',
         'pai_pv_id',
         'sf_pv_id',

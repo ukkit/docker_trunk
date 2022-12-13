@@ -602,6 +602,8 @@ $escm_type_array = ["Production","Sandbox"];
             {!! Form::label('instance_note', 'Notes:') !!}
             {!! Form::textarea('instance_note', null, ['class' => 'form-control', 'rows' => 2, 'placeholder' => 'Optional']) !!}
         </div>
+
+        {!! Form::hidden('users_id', Auth::id()) !!}
     </div>
     <hr>
     {{-- TEAMS BLOCK STARTS HERE --}}

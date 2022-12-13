@@ -22,6 +22,7 @@ class Database_detailRepository extends BaseRepository
     protected $fieldSearchable = [
         'server_details_id',
         'database_types_id',
+        'users_id',
         'db_sid',
         'db_user',
         'db_pass',

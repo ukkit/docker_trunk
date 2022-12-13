@@ -20,6 +20,7 @@ class Pai_detailRepository extends BaseRepository
     protected $fieldSearchable = [
         'server_details_id',
         'ambari_details_id',
+        'users_id',
         'pai_type',
         'pai_user',
         'pai_pwd',

@@ -19,6 +19,7 @@ class Intellicus_detailRepository extends BaseRepository
         'intellicus_name',
         'server_details_id',
         'database_details_id',
+        'users_id',
         'intellicus_port',
         'intellicus_login',
         'intellicus_pwd',

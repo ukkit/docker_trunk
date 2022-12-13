@@ -21,6 +21,7 @@ class Ml_detailRepository extends BaseRepository
         'instance_details_id',
         'intellicus_details_id',
         'database_details_id',
+        'users_id',
         'ml_builds_id',
         'ml_name',
         'zeppelin_port',
