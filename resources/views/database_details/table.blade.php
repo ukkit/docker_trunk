@@ -4,11 +4,11 @@
 <table class="table table-responsive table-condensed table-striped" id="databaseDetails-table">
     <thead>
         <tr>
-            @hasanyrole('advance|admin|superadmin')
+            @auth
             <th class="text-center id_column"><i class="fas fa-portrait" title="ID"></i></th> {{-- 1. ID --}}
             @else
             <th class="text-center id_column">#</th> {{-- 1. Count --}}
-            @endhasanyrole
+            @endauth
             <th class="text-left"><i class="fas fa-server" title="Server Name"></i></th> {{-- 2. Server Name --}}
             <th class="hidden"><i class="fas fa-network-wired" title="IP Address"></i></th> {{-- 3. IP Address --}}
             <th class="hidden">Repository</th> {{-- Repository (Hidden) --}}
@@ -126,7 +126,6 @@
                     $user_has_rights = false;
                 }
 
-
                 try {
                     $uii = DB::table('instance_details')->where('database_details_id', $databaseDetail->id)->whereNull('deleted_at')->get();
                     if (count($uii) == 1) {
@@ -142,6 +141,11 @@
                     Log::error($th->getMessage());
                 }
 
+                // This check is added that if current user is owner of entry, then let the user edit the data
+                if (Auth::id() == $databaseDetail->users_id) {
+                    $user_has_rights = True;
+                }
+
             ?>
             @if($databaseDetail->db_is_active == "N")
                 <tr class="danger">
@@ -149,11 +153,11 @@
                 <tr>
             @endif
 
-                @hasanyrole('advance|admin|superadmin')
+                @auth
                 <td class="text-center">{!! $databaseDetail->id !!}</td> {{-- 1. ID --}}
                 @else
                 <td class="text-center">{!! $CX !!}</td> {{-- 1. Count --}}
-                @endhasanyrole
+                @endauth
                 <td> {{-- 2. Server Name --}}
                     <a href="{!! route('serverDetails.show', [$databaseDetail->server_details_by_id]) !!}">
                     {!! strtoupper($server_name) !!}</a>&nbsp;{!! $icons !!}

@@ -6,11 +6,11 @@ $CX=1;
         <thead>
             <tr>
                 {{-- <th>Server Details Id</th> --}}
-                @hasanyrole('advance|admin|superadmin')
+                @auth
                     <th class="text-center id_column">ID</th>
                 @else
                     <th class="text-center id_column">#</th>
-                @endhasanyrole
+                @endauth
                 <th class="name_column">Name</th>
                 <th class="name_column">Server Name</th>
                 <th class="hidden">IP Address</th>
@@ -115,20 +115,25 @@ $CX=1;
                 Log::error($th->getMessage());
             }
 
+            // This check is added that if current user is owner of entry, then let the user edit the data
+            if (Auth::id() == $intellicusDetail->users_id) {
+                    $user_has_rights = True;
+                }
+
         @endphp
             @if($intellicusDetail->is_active == "Y")
             <tr>
             @else
             <tr class="disabled">
             @endif
-                @hasanyrole('advance|admin|superadmin')
+                @auth
                     <td class="text-center">{!! $intellicusDetail->id !!}</td>
                 @else
                     <td class="text-center">{!! $CX !!}</td>
                     @php
                     $CX++;
                     @endphp
-                @endhasanyrole
+                @endauth
                 <td>
                     <span>
                     {{ $intellicusDetail->intellicus_name }}

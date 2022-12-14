@@ -2,11 +2,11 @@
     <table class="table table-responsive table-condensed table-striped" id="mlDetails-table">
         <thead>
             <tr>
-            @hasanyrole('advance|admin|superadmin')
+            @auth
                 <th class="text-center id_column">ID</th>
             @else
                 <th class="text-center id_column">#</th>
-            @endhasanyrole
+            @endauth
             <th  class="name_column">Name</th>
             <th  class="name_column">Server Name</th>
             <th>ML Build</th>
@@ -50,17 +50,24 @@
                 $ml_build = Null;
             }
 
+            $user_has_rights = False;
+
+            // This check is added that if current user is owner of entry, then let the user edit the data
+            if (Auth::id() == $mlDetail->users_id) {
+                    $user_has_rights = True;
+                }
+
             $URL = "http://".$server_ip.":".$mlDetail->zeppelin_port."/";
             $server_url = route('serverDetails.show', [$mlDetail->server_details_id]);
             $CX++;
         @endphp
 
             <tr>
-                @hasanyrole('advance|admin|superadmin')
+                @auth
                     <td class="text-center">{!! $mlDetail->id !!}</td>
                 @else
                     <td class="text-center">{!! $CX !!}</td>
-                @endhasanyrole
+                @endauth
                 <td><a href="{{ $URL }}" target="_blank"> <strong>{{ strtoupper($mlDetail->ml_name) }} </strong></a></td>
                 <td><a href="{{ $server_url }}" target="_blank"> {{strtoupper($server_name) }} </a></td>
                 <td> {!! $ml_build !!} </td>
@@ -73,11 +80,13 @@
                 <td>{{ $mlDetail->notes }}</td>
 
                 @can('edit_databaseDetails')
-                <td class="text-center">
-                    {!! Form::open(['class'=>'inline','route' => ['mlDetails.edit', $mlDetail->id], 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
-                    {!! Form::close() !!}
-                </td>
+                    @if($user_has_rights)
+                    <td class="text-center">
+                        {!! Form::open(['class'=>'inline','route' => ['mlDetails.edit', $mlDetail->id], 'method' => 'get']) !!}
+                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                        {!! Form::close() !!}
+                    </td>
+                    @endif
                 @endcan
                 @can('delete_databaseDetails')
                 <td class="text-center">
