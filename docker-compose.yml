@@ -51,18 +51,9 @@ services:
       - opentap
     restart: unless-stopped
 
-  # cron:
-  #   build:
-  #     context: ./
-  #     dockerfile: cron.dockerfile
-  #   volumes:
-  #     - ./:/var/www
-  #   networks:
-  #     - opentap
-
   pma:
     image: phpmyadmin
-    restart: always
+    restart: unless-stopped
     ports:
       - 8180:80
     networks:
