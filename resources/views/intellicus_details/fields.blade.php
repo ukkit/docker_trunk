@@ -3,7 +3,7 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
 // $java_type_array = array("Oracle JDK","Amazon Corretto","OpenJDK");
 ?>
 <div class="row">
-
+    {!! Form::hidden('users_id', Auth::id()) !!}
     <!-- Intellicus Name Field -->
     {{-- <div class="form-group col-sm-2 col-sm-offset-2 "> --}}
     <div class="form-group col-sm-2">

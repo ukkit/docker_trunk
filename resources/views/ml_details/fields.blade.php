@@ -1,5 +1,5 @@
 <div class="row">
-
+    {!! Form::hidden('users_id', Auth::id()) !!}
     <!-- Ml Name Field -->
     <div class="form-group col-sm-3">
         {!! Form::label('ml_name', 'Name:') !!}

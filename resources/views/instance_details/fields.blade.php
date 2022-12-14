@@ -8,6 +8,8 @@ $escm_type_array = ["Production","Sandbox"];
 
     {{-- FIRST BLOCK STARTS HERE --}}
     <div class="row">
+        {!! Form::hidden('users_id', Auth::id()) !!}
+
         <!-- Instance Name Field -->
         <div class="form-group col-sm-2">
             {!! Form::label('instance_name', 'Instance/Customer Name:') !!}
@@ -603,7 +605,6 @@ $escm_type_array = ["Production","Sandbox"];
             {!! Form::textarea('instance_note', null, ['class' => 'form-control', 'rows' => 2, 'placeholder' => 'Optional']) !!}
         </div>
 
-        {!! Form::hidden('users_id', Auth::id()) !!}
     </div>
     <hr>
     {{-- TEAMS BLOCK STARTS HERE --}}

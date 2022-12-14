@@ -4,6 +4,7 @@ $owner_array = ["Avengers","Dragons", "Guardians", "Incredibles", "Justice Leagu
 ?>
 
 <div class="row">
+    {!! Form::hidden('users_id', Auth::id()) !!}
     <!-- Server Name Field -->
     <div class="form-group col-md-3">
         {!! Form::label('server_name', 'Name:') !!}

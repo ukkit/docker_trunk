@@ -2,6 +2,7 @@
 $repo_array = ["SPO","PAI","Intellicus"];
 ?>
     <div class="row">
+        {!! Form::hidden('users_id', Auth::id()) !!}
         <!-- Server Name Field -->
         <div class="form-group col-sm-3">
             {!! Form::label('server_details_id', 'Server:') !!}

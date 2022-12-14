@@ -2,7 +2,7 @@
 $pai_type_array = ["pai-hadoop","pai-oracle"];
 ?>
     <div class="row">
-
+        {!! Form::hidden('users_id', Auth::id()) !!}
         <!-- Server Details Id Field -->
         {{-- <div class="form-group col-sm-3">
             {!! Form::label('server_details_id', 'Server Details Id:') !!}
