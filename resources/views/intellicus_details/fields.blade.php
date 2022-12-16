@@ -14,7 +14,7 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
     <!-- Server Details Id Field -->
     <div class="form-group col-sm-2">
         {!! Form::label('server_details_id', 'Server:') !!}
-        <select name="server_details_id" class="form-control select-server-name">
+        <select name="server_details_id" class="form-control select-server-name" required>
             <option value="">Select .... </option>
             @foreach($server_detail as $sda)
                 @if($this_is_edit)
@@ -29,7 +29,7 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
     <!-- Intellicus Versions Id Field -->
     <div class="form-group col-sm-2">
         {!! Form::label('intellicus_versions_id', 'Version:') !!}
-        <select name="intellicus_versions_id" class="form-control select-server-name">
+        <select name="intellicus_versions_id" class="form-control select-server-name" required>
             <option value="">Select .... </option>
             @foreach($intellicus_version as $ivn)
                 @if($this_is_edit)
@@ -44,7 +44,7 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
     <!-- Database Details Id Field -->
     <div class="form-group col-sm-2">
         {!! Form::label('database_details_id', 'Repository:') !!}
-        <select name="database_details_id" class="form-control select-server-name">
+        <select name="database_details_id" class="form-control select-server-name" required>
             <option value="">Select .... </option>
                 @foreach($db_detail as $dbd)
                     @if($this_is_edit)
@@ -83,27 +83,6 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
         {!! Form::number('intellicus_memory', null, ['class' => 'form-control',  'required']) !!}
     </div>
 
-    <!-- IS_HTTPS field -->
-    <div class="form-group col-sm-2">
-        {!! Form::label('is_https', 'HTTPS Enabled?') !!}
-        <div class="form-control disabled">
-            <label class="radio-inline">
-                @if($this_is_edit)
-                    <input type="radio" name="is_https" value= "Y" @if($record->is_https == "Y")  checked @endif> Yes
-                @else
-                    <input type="radio" name="is_https" value="Y"> Yes
-                @endif
-            </label>
-            <label class="radio-inline">
-                @if($this_is_edit)
-                    <input type="radio" name="is_https" value= "N" @if($record->is_https == "N")  checked @endif> No
-                @else
-                    <input type="radio" name="is_https" value="N" checked> No
-                @endif
-            </label>
-        </div>
-    </div>
-
     <!-- JDK type Field -->
     <div class="form-group col-sm-2">
         {!! Form::label('jdk_type', 'JDK Type:') !!}
@@ -125,24 +104,39 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
         {!! Form::text('jdk_version', null, ['class' => 'form-control','placeholder' => 'optional']) !!}
     </div>
 
-
+    <div class="form-group col-sm-4">
+            {!! Form::label('intellicus_install_path', 'Intellicus Install Path:') !!}
+            {!! Form::text('intellicus_install_path', null, ['class' => 'form-control', 'placeholder' => 'only shared directory name, ip will be added automatically']) !!}
+        </div>
 
 </div>
 
 <div class="row">
 
-    @if($this_is_edit)
-    <div class="form-group col-sm-5 col-sm-offset-1">
-    @else
-    <div class="form-group col-sm-8 col-sm-offset-1">
-    @endif
-    <!-- Intellicus Install Path Field -->
-    {{-- <div class="form-group col-sm-4 col-sm-offset-4"> --}}
-        {!! Form::label('intellicus_install_path', 'Intellicus Install Path:') !!}
-        {!! Form::text('intellicus_install_path', null, ['class' => 'form-control', 'placeholder' => 'only shared directory name, ip will be added automatically']) !!}
-    </div>
 
     @if($this_is_edit)
+
+    <!-- IS_HTTPS field -->
+    <div class="form-group col-sm-2 col-sm-offset-3">
+        {!! Form::label('is_https', 'HTTPS Enabled?') !!}
+        <div class="form-control disabled">
+            <label class="radio-inline">
+                @if($this_is_edit)
+                    <input type="radio" name="is_https" value= "Y" @if($record->is_https == "Y")  checked @endif> Yes
+                @else
+                    <input type="radio" name="is_https" value="Y"> Yes
+                @endif
+            </label>
+            <label class="radio-inline">
+                @if($this_is_edit)
+                    <input type="radio" name="is_https" value= "N" @if($record->is_https == "N")  checked @endif> No
+                @else
+                    <input type="radio" name="is_https" value="N" checked> No
+                @endif
+            </label>
+        </div>
+    </div>
+
     <div class="form-group col-sm-2">
         {!! Form::label('is_active', 'Intellicus Active?') !!}
         <div class="form-control">
@@ -159,6 +153,7 @@ $java_type_array = ["Oracle JDK","Amazon Corretto"];
         {!! Form::label('check_fail_count', 'Check Fail Threshold:') !!}
         {!! Form::number('check_fail_count', null, ['class' => 'form-control',  'required']) !!}
     </div>
+
     @endif
 
 </div>

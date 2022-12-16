@@ -53,19 +53,20 @@ class Database_detailController extends AppBaseController
         // $sd_arr['server_detail'] = Server_detail::All();
         // Below will list only DB Servers in Add Database Details page
         $sd_arr['server_detail'] = DB::table('server_details')
-                                    ->join('server_uses', 'server_details.server_uses_id', 'server_uses.id')
-                                    ->where('server_uses.use_short_name', 'DB')
-                                    ->select('server_details.*')
-                                    ->get();
+            ->join('server_uses', 'server_details.server_uses_id', 'server_uses.id')
+            ->where('server_uses.use_short_name', 'DB')
+            ->whereNull('server_details.deleted_at')
+            ->select('server_details.*')
+            ->get();
         $dt_arr['database_type'] = Database_type::All();
         $ad_arr['ambari_detail'] = Ambari_detail::All();
 
         return view('database_details.create')
-        ->with($sd_arr)
-        ->with($dt_arr)
-        ->with($ad_arr)
-        ->with('show_is_active', false)
-        ->with('this_is_edit', false);
+            ->with($sd_arr)
+            ->with($dt_arr)
+            ->with($ad_arr)
+            ->with('show_is_active', false)
+            ->with('this_is_edit', false);
     }
 
     /**
@@ -88,7 +89,7 @@ class Database_detailController extends AppBaseController
         $stripped_dbuser = str_replace('_', '', $lower_dbuser);
         $stripped_dbuser = str_replace('-', '', $stripped_dbuser);
 
-        $dbd_id = $stripped_ip.'_'.$stripped_dbsid.'_'.$stripped_dbuser;
+        $dbd_id = $stripped_ip . '_' . $stripped_dbsid . '_' . $stripped_dbuser;
 
         $input['gen_dbd_id'] = $dbd_id;
         // CODE END - auto generate GEN_DBD_ID
@@ -143,13 +144,13 @@ class Database_detailController extends AppBaseController
         $rec_arr['record'] = DB::table('database_details')->where('id', $id)->get()->first();
 
         return view('database_details.edit')
-        ->with('databaseDetail', $databaseDetail)
-        ->with($sd_arr)
-        ->with($dt_arr)
-        ->with($rec_arr)
-        ->with($ad_arr)
-        ->with('show_is_active', true)
-        ->with('this_is_edit', true);
+            ->with('databaseDetail', $databaseDetail)
+            ->with($sd_arr)
+            ->with($dt_arr)
+            ->with($rec_arr)
+            ->with($ad_arr)
+            ->with('show_is_active', true)
+            ->with('this_is_edit', true);
     }
 
     /**
@@ -179,7 +180,7 @@ class Database_detailController extends AppBaseController
         $stripped_dbuser = str_replace('_', '', $lower_dbuser);
         $stripped_dbuser = str_replace('-', '', $stripped_dbuser);
 
-        $dbd_id = $stripped_ip.'_'.$stripped_dbsid.'_'.$stripped_dbuser;
+        $dbd_id = $stripped_ip . '_' . $stripped_dbsid . '_' . $stripped_dbuser;
 
         $request['gen_dbd_id'] = $dbd_id;
         // CODE END - auto generate GEN_DBD_ID

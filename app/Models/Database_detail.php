@@ -66,7 +66,15 @@ class Database_detail extends Model
      *
      * @var array
      */
-    public static $rules = [];
+    public static $rules = [
+        'server_details_id' => 'required',
+        'database_types_id' => 'required',
+        'db_sid' => 'required',
+        'db_user' => 'required',
+        'db_pass' => 'required',
+        'db_port' => 'required',
+        'repository_type' => 'string',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

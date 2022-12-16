@@ -6,8 +6,7 @@ $repo_array = ["SPO","PAI","Intellicus"];
         <!-- Server Name Field -->
         <div class="form-group col-sm-3">
             {!! Form::label('server_details_id', 'Server:') !!}
-            <!-- {!! Form::number('server_details_id', null, ['class' => 'form-control']) !!} -->
-            <select name="server_details_id" class="form-control select-server-name">
+            <select name="server_details_id" class="form-control select-server-name" required>
                 <option value="">Select .... </option>
                 @foreach($server_detail as $sda)
                     @if($this_is_edit)
@@ -22,8 +21,7 @@ $repo_array = ["SPO","PAI","Intellicus"];
         <!-- Database Types Field -->
         <div class="form-group col-sm-3">
             {!! Form::label('database_types_id', 'Database:') !!}
-            <!-- {!! Form::number('database_types_id', null, ['class' => 'form-control']) !!} -->
-            <select name="database_types_id" class="form-control select-db-type">
+            <select name="database_types_id" class="form-control select-db-type" required>
                 <option value="">Select .... </option>
                 @foreach($database_type as $dbt)
                     @if($this_is_edit)
@@ -64,7 +62,7 @@ $repo_array = ["SPO","PAI","Intellicus"];
         <!-- Repository Type Field -->
         <div class="form-group col-sm-2">
             {!! Form::label('repository_type', 'Repository:') !!}
-            <select name="repository_type" class="form-control">
+            <select name="repository_type" class="form-control" required>
                 <option value="">Select .... </option>
                 @foreach($repo_array as $jta)
                     @if($this_is_edit)
@@ -80,7 +78,7 @@ $repo_array = ["SPO","PAI","Intellicus"];
         <div class="form-group col-sm-2">
             {!! Form::label('ambari_details_id', 'Ambari:') !!}
             <select name="ambari_details_id" class="form-control select-server-name">
-                <option value="">Select .... </option>
+                <option value="">Optional .... </option>
                 @foreach($ambari_detail as $ada)
                     @if($this_is_edit)
                         <option value="{{ $ada->id }}" @if($ada->id==$record->ambari_details_id) selected='selected' @endif >{{ $ada->ambari_name }}</option>
@@ -94,7 +92,7 @@ $repo_array = ["SPO","PAI","Intellicus"];
         <!-- JIRA Number Field -->
         <div class="form-group col-sm-2">
             {!! Form::label('jira_number', 'JIRA Number:') !!}
-            {!! Form::text('jira_number', null, ['class' => 'form-control', 'placeholder' => 'Optional / SPM-1234']) !!}
+            {!! Form::text('jira_number', null, ['class' => 'form-control', 'placeholder' => 'Optional']) !!}
         </div>
 
         <!-- Db Notes Field -->
